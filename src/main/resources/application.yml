@@ -11,6 +11,6 @@ spring:
     suffix: .jsp
 s3:
   endpointUrl: http://127.0.0.1:9000
-  accessKey: <ignore this for now>
-  secretKey: <ignore this for now>
+  accessKey: CXGHC9Z74SN8PLLM66K7
+  secretKey: w2/e8/Dfu7kxvMkzYGjLIc/yOId/2PGgYXj2qrnl
   bucketName: moviefun

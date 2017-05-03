@@ -13,7 +13,6 @@ import org.superbiz.moviefun.Blob;
 import org.superbiz.moviefun.BlobStore;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
@@ -23,7 +22,6 @@ import java.util.Optional;
 
 import static java.lang.ClassLoader.getSystemResource;
 import static java.lang.String.format;
-import static java.nio.file.Files.readAllBytes;
 
 @Controller
 @RequestMapping("/albums")
@@ -60,12 +58,12 @@ public class AlbumsController {
 
     @GetMapping("/{albumId}/cover")
     public HttpEntity<byte[]> getCover(@PathVariable long albumId) throws IOException, URISyntaxException {
-       Path coverFilePath = getExistingCoverPath(albumId);
         File file = getCoverFile(albumId);
         Optional<Blob> blob =  blobStore.get(file.getName());
+       // Path coverFilePath = getExistingCoverPath(albumId);
         byte[] imageBytes = IOUtils.toByteArray(blob.get().inputStream);
 
-        HttpHeaders headers = createImageHttpHeaders(coverFilePath, imageBytes);
+        HttpHeaders headers = createImageHttpHeaders(blob.get().contentType, imageBytes);
 
         return new HttpEntity<>(imageBytes, headers);
     }
@@ -82,8 +80,8 @@ public class AlbumsController {
         return new File(coverFileName);
     }
 
-    private HttpHeaders createImageHttpHeaders(Path coverFilePath, byte[] imageBytes) throws IOException {
-        String contentType = new Tika().detect(coverFilePath);
+    private HttpHeaders createImageHttpHeaders(String contentType, byte[] imageBytes) throws IOException {
+        //String contentType = new Tika().detect(coverFilePath);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType(contentType));
