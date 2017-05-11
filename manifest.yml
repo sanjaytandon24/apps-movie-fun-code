@@ -5,21 +5,25 @@ services:
 - movie-fun-sso
 - movie-fun-registry
 env:
-  TRUST_CERTS: api.cfapps-01.haas-66.pez.pivotal.io,basic-sso.login.run-01.haas-66.pez.pivotal.io
+  TRUST_CERTS: api.run.haas-69.pez.pivotal.io,login.run.haas-69.pez.pivotal.io,movie-fun-app-sanjay.cfapps.haas-69.pez.pivotal.io,album-service-sanjay.cfapps.haas-69.pez.pivotal.io,movie-service-sanjay.cfapps.haas-69.pez.pivotal.io
 applications:
 - name: album-service
   path: applications/album-service/build/libs/album-service-1.1.0-SNAPSHOT.jar
+  host: album-service-sanjay
   services:
   - album-database
   env:
     GRANT_TYPE: client_credentials
 - name: movie-service
   path: applications/movie-service/build/libs/movie-service-1.1.0-SNAPSHOT.jar
+  host: movie-service-sanjay
   services:
   - movie-database
   env:
     GRANT_TYPE: client_credentials
 - name: movie-fun-app
   path: applications/movie-fun-app/build/libs/movie-fun-app-1.1.0-SNAPSHOT.war
+  host: movie-fun-app-sanjay
   services:
   - movie-fun-config
+  - movie-fun-circuit-breaker
